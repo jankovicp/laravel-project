@@ -24,7 +24,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 
-Route::post('dashboard/accommodations', [AccommodationController::class, 'store']);
+
+Route::resource('accommodations' , AccommodationController::class);
+
 
 require __DIR__.'/auth.php';
 
