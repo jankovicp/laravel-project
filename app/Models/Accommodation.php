@@ -20,6 +20,7 @@ class Accommodation extends Model
     ];
 
 */
+
     public static function paginate($int)
     {
     }

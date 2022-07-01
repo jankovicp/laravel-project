@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Accommodation;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -16,11 +18,14 @@ class AccommodationController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
-    public function index()
-    {
 
-       $accommodations = DB::table('accommodations')->paginate(10);
+
+    public function index() {
+
+
+        $accommodations = DB::table('accommodations')->where("users_id", Auth::user()->id)->paginate(10);
        return view('accommodation.index', ['accommodations' => $accommodations]);
     }
 
@@ -28,20 +33,27 @@ class AccommodationController extends Controller
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
     public function create()
     {
+       $this->authorize('create', Accommodation::class);
+
         return view('accommodation.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
+     * @throws AuthorizationException
      */
     public function store(Request $request)
     {
+
+       $this->authorize('create', Accommodation::class);
+
 
         try {
 
@@ -69,38 +81,53 @@ class AccommodationController extends Controller
 
 
     }
+
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Accommodation  $accommodation
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Accommodation $accommodation
+     * @return Response
+     * @throws AuthorizationException
      */
     public function show(Accommodation $accommodation)
     {
+
+        $this->authorize('view', $accommodation);
+
         return view('accommodation.show',compact('accommodation'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Accommodation  $accommodation
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Accommodation $accommodation
+     * @return Response
+     * @throws AuthorizationException
      */
     public function edit(Accommodation $accommodation)
     {
+         $this->authorize('update', $accommodation);
+
         return view('accommodation.edit',compact('accommodation'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Accommodation  $accommodation
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Accommodation $accommodation
+     * @return Response
+     * @throws AuthorizationException
      */
     public function update(Request $request, Accommodation $accommodation)
     {
-        $request->validate([
+
+      //  if ($request->user()->cannot('update', $accommodation)) {
+      //      abort(403);
+
+           $this->authorize('update', $accommodation);
+
+            $request->validate([
              'name' => 'required',
             'number' => 'required',
             'address' => 'nullable',
@@ -115,11 +142,15 @@ class AccommodationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Accommodation  $accommodation
-     * @return \Illuminate\Http\Response
+     * @param \App\Models\Accommodation $accommodation
+     * @return Response
+     * @throws AuthorizationException
      */
     public function destroy(Accommodation $accommodation)
     {
+       $this->authorize('delete', $accommodation);
+
+
         $accommodation->delete();
 
         return redirect()->route('accommodations.index')

@@ -21,6 +21,8 @@
         </div>
     @endif
 
+
+
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
@@ -35,6 +37,7 @@
                 <td>{{ $accommodation->number }}</td>
                 <td>{{ $accommodation->address }}</td>
 
+
                 <td class="text-center">
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -42,7 +45,11 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="block text-left px-3 text-sm leading-6 hover:bg-gray-300" href="{{ route('accommodations.show',$accommodation->id) }}">Show</a>
+
+
                     <a class="block text-left px-3 text-sm leading-6 hover:bg-gray-300" href="{{ route('accommodations.edit',$accommodation->id) }}">Edit</a>
+
+
 
                     <form action="{{ route('accommodations.destroy',$accommodation->id) }}" method="POST">
 
@@ -50,6 +57,7 @@
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Delete</button>
                     </form>
+
                         </div>
                     </div>
 

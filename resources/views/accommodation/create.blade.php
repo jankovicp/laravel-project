@@ -26,6 +26,8 @@
         </div>
     @endif
 
+
+
     <form action="{{ route('accommodations.store') }}" method="POST">
         @csrf
 
@@ -57,4 +59,6 @@
             </div>
         </div>
     </form>
+
+
 @endsection
