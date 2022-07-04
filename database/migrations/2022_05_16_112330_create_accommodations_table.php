@@ -20,6 +20,7 @@ class CreateAccommodationsTable extends Migration
             $table->string('name');
             $table->string('address')->nullable();
             $table->integer('number');
+            $table->string('thumbnail')->nullable();
             $table->timestamps();
         });
     }

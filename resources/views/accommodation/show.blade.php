@@ -32,6 +32,13 @@
                 {{ $accommodation->address }}
             </div>
         </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
+
+                <strong>Thumbnail:</strong>
+           <img src="{{asset('storage/' . $accommodation->thumbnail)  }}" alt="" class="rounded-xl">
+
+        </div>
+
 
     </div>
 

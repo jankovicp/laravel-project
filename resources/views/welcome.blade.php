@@ -79,7 +79,9 @@
                     </footer>
                 </div>
 
-
+                @foreach($accomodations as $acc)
+                    <h1>{{$acc->name}}</h1>
+                @endforeach
 
                 </body>
 

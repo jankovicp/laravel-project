@@ -28,7 +28,7 @@
 
 
 
-    <form action="{{ route('accommodations.store') }}" method="POST">
+    <form action="{{ route('accommodations.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -54,7 +54,15 @@
                 </div>
             </div>
 
-            <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+            <strong>Thumbnail:</strong>
+            <input class="form-control" type="file" style="height:150px" name="thumbnail" placeholder="Thumbnail"></input>
+        </div>
+    </div>
+
+
+    <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>
         </div>

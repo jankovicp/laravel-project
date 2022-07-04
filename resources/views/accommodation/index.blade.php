@@ -28,6 +28,7 @@
             <th>Name</th>
             <th>Number</th>
             <th>Address</th>
+            <th>Thumbnail</th>
             <th>Action</th>
         </tr>
         <tbody>
@@ -35,8 +36,9 @@
             <tr>
                 <td>{{ $accommodation->name }}</td>
                 <td>{{ $accommodation->number }}</td>
-                <td>{{ $accommodation->address }}</td>
 
+                <td>{{ $accommodation->address }}</td>
+                <td>{{ $accommodation->thumbnail }}</td>
 
                 <td class="text-center">
                     <div class="dropdown">

@@ -13,6 +13,11 @@ use Illuminate\Support\Facades\Validator;
 class AccommodationController extends Controller
 {
 
+    public function welcome(){
+        $accomodoations = Accommodation::all();
+        return view('welcome', ['accomodations'=>$accomodoations]);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -48,11 +53,23 @@ class AccommodationController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      * @throws AuthorizationException
+     * @throws \Exception
      */
     public function store(Request $request)
     {
 
-       $this->authorize('create', Accommodation::class);
+      // $path =  request()->file('thumbnail')->store('thumbnails');
+
+     //   return 'Done: ' . $path;
+
+
+
+       //dd( request()->file('thumbnail'));
+//        dd(request('thumbnail'));
+
+
+
+     $this->authorize('create', Accommodation::class);
 
 
         try {
@@ -60,21 +77,23 @@ class AccommodationController extends Controller
             Validator::make($request->all(), [
                 'name' => 'required',
                 'number' => 'required',
-                'address' => 'nullable'
+                'address' => 'nullable' ,
+                'thumbnail' => 'required|image'
             ]);
         }
         catch(\Exception $e){
             dd($e);
         }
 
-        $accommodation = new Accommodation();
+//        $accommodation = new Accommodation();
 
-        $accommodation->create([
+        Accommodation::create([
 
             'users_id' => Auth::user()->id,
             'name' => request('name'),
             'number'=> request('number'),
-            'address' => request('address')
+            'address' => request('address'),
+            'thumbnail' => request()->file('thumbnail')->store('thumbnails')
 
         ]);
         return redirect()->route('accommodations.index')->with('success','Accommodation created successfully.');
@@ -119,21 +138,29 @@ class AccommodationController extends Controller
      * @return Response
      * @throws AuthorizationException
      */
-    public function update(Request $request, Accommodation $accommodation)
+    public function update(Request $request , Accommodation $accommodation)
     {
 
       //  if ($request->user()->cannot('update', $accommodation)) {
       //      abort(403);
 
+       // dd(request('thumbnail'));
            $this->authorize('update', $accommodation);
 
-            $request->validate([
-             'name' => 'required',
-            'number' => 'required',
-            'address' => 'nullable',
-            ]);
 
-        $accommodation->update($request->all());
+
+         $attributes =  request()->validate([
+                 'name' => 'required',
+                 'number' => 'required',
+                 'address' => 'nullable',
+                'thumbnail' => 'image'
+            ]);
+         if(isset($attributes['thumbnail']))
+         {
+             $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+         }
+
+        $accommodation->update($attributes);
 
         return redirect()->route('accommodations.index')->with('success','Accommodation updated successfully');
 
@@ -157,3 +184,4 @@ class AccommodationController extends Controller
             ->with('success','accommodation  deleted successfully');
     }
 }
+
