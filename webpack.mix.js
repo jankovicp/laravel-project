@@ -11,6 +11,6 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
+mix.js('resources/dist/js/js/bootstrap.bundle.min.js', 'public/js')
     .postCss('resources/css/style.css', 'public/css')
     .sourceMaps();

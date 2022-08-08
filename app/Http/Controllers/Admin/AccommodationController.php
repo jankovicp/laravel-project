@@ -1,6 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+
+
+namespace App\Http\Controllers\Admin;
+
 
 use App\Models\Accommodation;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -10,15 +13,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class AccommodationController extends Controller
+class AccommodationController
 {
-
-    public function welcome(){
-        $accomodoations = Accommodation::all();
-        return view('welcome', ['accomodations'=>$accomodoations]);
-    }
-
-
     /**
      * Display a listing of the resource.
      *
@@ -26,12 +22,17 @@ class AccommodationController extends Controller
      * @throws AuthorizationException
      */
 
+    public function welcome()
+    {
+        $accommodoations = Accommodation::all();
+        return view('welcome', ['accommodations'=>$accommodoations]);
+    }
 
     public function index() {
 
 
         $accommodations = DB::table('accommodations')->where("users_id", Auth::user()->id)->paginate(10);
-       return view('accommodation.index', ['accommodations' => $accommodations]);
+        return view('accommodation.index', ['accommodations' => $accommodations]);
     }
 
     /**
@@ -42,7 +43,7 @@ class AccommodationController extends Controller
      */
     public function create()
     {
-       $this->authorize('create', Accommodation::class);
+        $this->authorize('create', Accommodation::class);
 
         return view('accommodation.create');
     }
@@ -58,18 +59,18 @@ class AccommodationController extends Controller
     public function store(Request $request)
     {
 
-      // $path =  request()->file('thumbnail')->store('thumbnails');
+        // $path =  request()->file('thumbnail')->store('thumbnails');
 
-     //   return 'Done: ' . $path;
+        //   return 'Done: ' . $path;
 
 
 
-       //dd( request()->file('thumbnail'));
+        //dd( request()->file('thumbnail'));
 //        dd(request('thumbnail'));
 
 
 
-     $this->authorize('create', Accommodation::class);
+        $this->authorize('create', Accommodation::class);
 
 
         try {
@@ -86,6 +87,7 @@ class AccommodationController extends Controller
         }
 
 //        $accommodation = new Accommodation();
+       // dd($request->all());
 
         Accommodation::create([
 
@@ -125,7 +127,7 @@ class AccommodationController extends Controller
      */
     public function edit(Accommodation $accommodation)
     {
-         $this->authorize('update', $accommodation);
+        $this->authorize('update', $accommodation);
 
         return view('accommodation.edit',compact('accommodation'));
     }
@@ -141,24 +143,24 @@ class AccommodationController extends Controller
     public function update(Request $request , Accommodation $accommodation)
     {
 
-      //  if ($request->user()->cannot('update', $accommodation)) {
-      //      abort(403);
+        //  if ($request->user()->cannot('update', $accommodation)) {
+        //      abort(403);
 
-       // dd(request('thumbnail'));
-           $this->authorize('update', $accommodation);
+        // dd(request('thumbnail'));
+        $this->authorize('update', $accommodation);
 
 
 
-         $attributes =  request()->validate([
-                 'name' => 'required',
-                 'number' => 'required',
-                 'address' => 'nullable',
-                'thumbnail' => 'image'
-            ]);
-         if(isset($attributes['thumbnail']))
-         {
-             $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
-         }
+        $attributes =  request()->validate([
+            'name' => 'required',
+            'number' => 'required',
+            'address' => 'nullable',
+            'thumbnail' => 'image'
+        ]);
+        if(isset($attributes['thumbnail']))
+        {
+            $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+        }
 
         $accommodation->update($attributes);
 
@@ -175,7 +177,7 @@ class AccommodationController extends Controller
      */
     public function destroy(Accommodation $accommodation)
     {
-       $this->authorize('delete', $accommodation);
+        $this->authorize('delete', $accommodation);
 
 
         $accommodation->delete();
@@ -183,5 +185,10 @@ class AccommodationController extends Controller
         return redirect()->route('accommodations.index')
             ->with('success','accommodation  deleted successfully');
     }
-}
 
+    private function authorize($string, $class)
+    {
+    }
+
+
+}

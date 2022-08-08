@@ -45,10 +45,29 @@
                                 name="password_confirmation" required />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
+                <div class="form-group row">
+                    <label for="Register as" class="col-md-4 col-form-label text-md-right">Register as</label>
+
+                    <div class="col-md-6">
+                        <select name="role" class="form-control" >
+                            <option value="admin">Admin</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                </div>
+
+
+
+
+                <div class="flex items-center justify-end mt-4">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
+
+
+
+
+
 
                 <x-button class="ml-4">
                     {{ __('Register') }}

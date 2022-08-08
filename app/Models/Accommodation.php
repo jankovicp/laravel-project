@@ -20,6 +20,7 @@ class Accommodation extends Model
     ];
 
 */
+    private $id;
 
     public static function paginate($int)
     {
@@ -33,7 +34,12 @@ class Accommodation extends Model
 
     }
 
+    public function bookedapartments()
+    {
 
+        return $this->belongsToMany(BookedApartments::class, 'booked_apartments');
+
+    }
 
 
 

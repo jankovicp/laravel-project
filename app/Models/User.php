@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -32,6 +33,16 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
+
+    public function isUser()
+    {
+        return $this->role == 'user';
+    }
 
     /**
      * The attributes that should be cast.
@@ -46,6 +57,13 @@ class User extends Authenticatable
     {
 
         return $this->hasMany(Accommodation::class);
+
+    }
+
+    public function bookedapartments()
+    {
+
+        return $this->belongsToMany(BookedApartments::class, 'booked_apartments');
 
     }
 

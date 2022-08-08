@@ -6,6 +6,7 @@ use App\Models\Accommodation;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AccommodationPolicy
 {
@@ -32,7 +33,8 @@ class AccommodationPolicy
      */
     public function view(User $user, Accommodation $accommodation)
     {
-        return $user->id === $accommodation->users_id;
+       // return $user->id === $accommodation->users_id;
+        return Auth::user()->isAdmin() && $user->id === $accommodation->users_id;
     }
 
     /**
@@ -43,7 +45,8 @@ class AccommodationPolicy
      */
     public function create(User $user)
     {
-        return $user->id;
+        //return $user->id;
+        return Auth::user()->isAdmin();
     }
 
     /**
@@ -55,7 +58,8 @@ class AccommodationPolicy
      */
     public function update(User $user, Accommodation $accommodation)
     {
-        return $user->id === $accommodation->users_id;
+       // return $user->id === $accommodation->users_id;
+        return Auth::user()->isAdmin() === $accommodation->users_id || Auth::user()->isUser();
 
     }
 
@@ -68,7 +72,9 @@ class AccommodationPolicy
      */
     public function delete(User $user, Accommodation $accommodation)
     {
-        return $user->id === $accommodation->users_id;
+      //  return $user->id === $accommodation->users_id;
+        return Auth::user()->isAdmin() === $accommodation->users_id;
+
     }
 
 }
